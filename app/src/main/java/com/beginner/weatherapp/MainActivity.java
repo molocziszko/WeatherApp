@@ -9,17 +9,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,34 +29,23 @@ public class MainActivity extends AppCompatActivity {
         et_dataInput = findViewById(R.id.et_dataInput);
         lv_WeatherReport = findViewById(R.id.lv_WeatherReports);
 
+        WeatherDataService weatherDataService = new WeatherDataService(MainActivity.this);
+
         btn_cityID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String url ="https://www.metaweather.com/api/location/search/?query=" + et_dataInput.getText().toString();
-
-                JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                weatherDataService.getCityID(et_dataInput.getText().toString(), new WeatherDataService.VolleyResponseListener() {
                     @Override
-                    public void onResponse(JSONArray response) {
-                        String cityID = "";
-                        try {
-                            JSONObject cityInfo = response.getJSONObject(0);
-                            cityID = cityInfo.getString("woeid");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        Toast.makeText(MainActivity.this, "City ID = " + cityID, Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onError(String message) {
                         Toast.makeText(MainActivity.this, "Something wrong.", Toast.LENGTH_SHORT).show();
                     }
-                });
 
-                // Add the request to the RequestQueue.
-                RequestQueueSingleton.getInstance(MainActivity.this).addToRequestQueue(request);
+                    @Override
+                    public void onResponse(String cityID) {
+                        Toast.makeText(MainActivity.this, "Returned an ID of " + cityID, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
