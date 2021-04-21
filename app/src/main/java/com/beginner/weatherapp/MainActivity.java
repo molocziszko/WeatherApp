@@ -35,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                weatherDataService.getCityID(et_dataInput.getText().toString(), new WeatherDataService.VolleyResponseListener() {
+                weatherDataService.getCityID(et_dataInput.getText().toString(),
+                                            new WeatherDataService.VolleyResponseListener() {
                     @Override
                     public void onError(String message) {
                         Toast.makeText(MainActivity.this, "Something wrong.", Toast.LENGTH_SHORT).show();
@@ -53,15 +54,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                weatherDataService.getCityForecastByID(et_dataInput.getText().toString(), new WeatherDataService.VolleyResponseListener() {
+                weatherDataService.getCityForecastByID(et_dataInput.getText().toString(), new WeatherDataService.ForeСastByIDResponse() {
                     @Override
                     public void onError(String message) {
-                        Toast.makeText(MainActivity.this, "Something wrong.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "something wrong", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onResponse(String cityID) {
-                        Toast.makeText(MainActivity.this, "Returned an ID of " + cityID, Toast.LENGTH_SHORT).show();
+                    public void onResponse(WeatherReportModel weatherReportModel) {
+                        Toast.makeText(MainActivity.this, weatherReportModel.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
