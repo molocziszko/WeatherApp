@@ -6,6 +6,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+/**
+ * In order to exclude multiple simultaneous requests we need a {@code RequestQueueSingleton}
+ * Singleton class which guarantees there is only one request at a time.
+ */
 public class RequestQueueSingleton {
     private static RequestQueueSingleton instance;
     private RequestQueue requestQueue;

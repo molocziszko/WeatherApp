@@ -2,6 +2,7 @@ package com.beginner.weatherapp;
 
 public class WeatherReportModel {
 
+    // Here we declare all fields that API have
     private int id;
     private String weather_state_name;
     private String weather_state_abbr;
@@ -18,11 +19,21 @@ public class WeatherReportModel {
     private float visibility;
     private int predictability;
 
-    public WeatherReportModel(int id, String weather_state_name, String weather_state_abbr,
-                              String wind_direction_compass, String created, String applicable_date,
-                              float min_temp, float max_temp, float the_temp, float wind_speed,
-                              float wind_direction, float air_pressure, int humidity,
-                              float visibility, int predictability) {
+    public WeatherReportModel(int id,
+                              String weather_state_name,
+                              String weather_state_abbr,
+                              String wind_direction_compass,
+                              String created,
+                              String applicable_date,
+                              float min_temp,
+                              float max_temp,
+                              float the_temp,
+                              float wind_speed,
+                              float wind_direction,
+                              float air_pressure,
+                              int humidity,
+                              float visibility,
+                              int predictability) {
         this.id = id;
         this.weather_state_name = weather_state_name;
         this.weather_state_abbr = weather_state_abbr;
@@ -40,9 +51,10 @@ public class WeatherReportModel {
         this.predictability = predictability;
     }
 
-    public WeatherReportModel() {
 
-    }
+    // empty constructor
+    public WeatherReportModel() {}
+
 
     public int getId() {
         return id;
@@ -163,6 +175,7 @@ public class WeatherReportModel {
     public void setPredictability(int predictability) {
         this.predictability = predictability;
     }
+
 
     @Override
     public String toString() {

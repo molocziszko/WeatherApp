@@ -20,6 +20,7 @@ public class WeatherDataService {
 
     public static final String QUERY_FOR_CITY_ID =
                         "https://www.metaweather.com/api/location/search/?query=";
+
     public static final String QUERY_FOR_CITY_WEATHER_BY_ID =
                         "https://www.metaweather.com/api/location/";
 
@@ -46,8 +47,8 @@ public class WeatherDataService {
     public void getCityID(String cityName, VolleyResponseListener volleyResponseListener) {
         String url = QUERY_FOR_CITY_ID + cityName;
 
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
-                                                            new Response.Listener<JSONArray>() {
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
             @Override
             public void onResponse(JSONArray response) {
                 cityID = "";
@@ -58,7 +59,6 @@ public class WeatherDataService {
                     e.printStackTrace();
                 }
 
-                // Toast.makeText(context, "City ID = " + cityID, Toast.LENGTH_SHORT).show();
                 volleyResponseListener.onResponse(cityID);
             }
         }, new Response.ErrorListener() {
@@ -71,9 +71,14 @@ public class WeatherDataService {
 
         // Add the request to the RequestQueue.
         RequestQueueSingleton.getInstance(context).addToRequestQueue(request);
-        // return cityID;
     }
 
+
+    /**
+     * The {@code ForeСastByIDResponse} interface provides two methods to indicate
+     * UI Thread (MainActivity) that response from API is successfully coming up or not.
+     *
+     */
     public interface ForeСastByIDResponse {
         void onError(String message);
 
@@ -93,10 +98,12 @@ public class WeatherDataService {
                 // Toast.makeText(context, response.toString(), Toast.LENGTH_SHORT).show();
 
                 try {
+                    // get the property called "consolidated_weather" which is an array
                     JSONArray consolidated_weather_list = response.getJSONArray("consolidated_weather");
 
 
                     for (int i = 0; i < consolidated_weather_list.length(); i++) {
+                        // get each item in the array and assign it to a new WeatherReportModel object
                         WeatherReportModel one_day_weather = new WeatherReportModel();
 
                         // get the every single JSONObject from jsonArray which is a one day in the list
@@ -131,16 +138,19 @@ public class WeatherDataService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                foreСastByIDResponse.onError("something wrong");
             }
         });
-                // get the property called "consolidated_weather" which is an array
 
-                // get each item in the array and assign it to a new WeatherReportModel object
         RequestQueueSingleton.getInstance(context).addToRequestQueue(request);
     }
 
 
+    /**
+     * The {@code GetCityForecastByNameCallback} interface provides two methods to indicate
+     * UI Thread (MainActivity) that response from API is successfully coming up or not.
+     *
+     */
     public interface GetCityForecastByNameCallback {
         void onError(String message);
 
@@ -162,7 +172,7 @@ public class WeatherDataService {
                 getCityForecastByID(cityID, new ForeСastByIDResponse() {
                     @Override
                     public void onError(String message) {
-
+                        getCityForecastByNameCallback.onError("something wrong");
                     }
 
                     @Override
@@ -171,12 +181,7 @@ public class WeatherDataService {
                         getCityForecastByNameCallback.onResponse(weatherReportModels);
                     }
                 });
-
             }
         });
-
-        // fetch the city forecast given the city id
-
-
     }
 }

@@ -30,16 +30,20 @@ public class MainActivity extends AppCompatActivity {
         btn_getWeatherByName = findViewById(R.id.btn_getWeatherByCityName);
 
         et_dataInput = findViewById(R.id.et_dataInput);
+
         lv_WeatherReport = findViewById(R.id.lv_WeatherReports);
 
         WeatherDataService weatherDataService = new WeatherDataService(MainActivity.this);
 
+
+        // Here we handle clicks
         btn_cityID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                weatherDataService.getCityID(et_dataInput.getText().toString(),
-                                            new WeatherDataService.VolleyResponseListener() {
+                weatherDataService.getCityID(
+                                    et_dataInput.getText().toString(),
+                                    new WeatherDataService.VolleyResponseListener() {
                     @Override
                     public void onError(String message) {
                         Toast.makeText(MainActivity.this, "Something wrong.", Toast.LENGTH_SHORT).show();
