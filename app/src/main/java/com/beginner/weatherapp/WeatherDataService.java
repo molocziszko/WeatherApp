@@ -30,11 +30,18 @@ public class WeatherDataService {
         this.context = context;
     }
 
+
+    /**
+     * The {@code VolleyResponseListener} interface provides two methods to indicate
+     * UI Thread (MainActivity) that response from API is successfully coming up or not.
+     *
+     */
     public interface VolleyResponseListener {
         void onError(String message);
 
         void onResponse(String cityID);
     }
+
 
     public void getCityID(String cityName, VolleyResponseListener volleyResponseListener) {
         String url = QUERY_FOR_CITY_ID + cityName;
@@ -133,7 +140,43 @@ public class WeatherDataService {
         RequestQueueSingleton.getInstance(context).addToRequestQueue(request);
     }
 
-//    public List<WeatherReportModel> getCityForecastByName(String cityName) {
-//
-//    }
+
+    public interface GetCityForecastByNameCallback {
+        void onError(String message);
+
+        void onResponse(List<WeatherReportModel> weatherReportModels);
+    }
+
+    public void getCityForecastByName(String cityName, GetCityForecastByNameCallback getCityForecastByNameCallback) {
+
+        // fetch the city id given the city name
+        getCityID(cityName, new VolleyResponseListener() {
+            @Override
+            public void onError(String message) {
+
+            }
+
+            @Override
+            public void onResponse(String cityID) {
+                // now we have the city id!
+                getCityForecastByID(cityID, new ForeСastByIDResponse() {
+                    @Override
+                    public void onError(String message) {
+
+                    }
+
+                    @Override
+                    public void onResponse(List<WeatherReportModel> weatherReportModels) {
+                        // we have the weather report for given city!
+                        getCityForecastByNameCallback.onResponse(weatherReportModels);
+                    }
+                });
+
+            }
+        });
+
+        // fetch the city forecast given the city id
+
+
+    }
 }
